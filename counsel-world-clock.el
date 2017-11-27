@@ -1,7 +1,7 @@
 ;;; conserl-world-clock.el --- Display world clock using Ivy.
 
 ;; Author: Kuang Chen <http://github.com/kchenphy>
-;; URL: https://github.com/kchenphy
+;; URL: https://github.com/kchenphy/counsel-world-clock
 ;; Version: 0.1
 ;; Package-Requires: ((ivy "0.9.0"))
 
@@ -26,7 +26,7 @@
 
 (require 'ivy)
 
-(defvar counsel-world-clock-time-format "%m/%d %H:%M (GMT%z)"
+(defvar counsel-world-clock-time-format "%B %d, %A, %H:%M (GMT%z)"
   "Time format for ‘counsel-world-clock’.")
 
 (defun counsel-world-clock--all-time-zones ()
