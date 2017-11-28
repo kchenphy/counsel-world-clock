@@ -1,4 +1,4 @@
-;;; conserl-world-clock.el --- Display world clock using Ivy.
+;;; counsel-world-clock.el --- Display world clock using Ivy.
 
 ;; Author: Kuang Chen <http://github.com/kchenphy>
 ;; URL: https://github.com/kchenphy/counsel-world-clock
@@ -22,8 +22,8 @@
 
 ;;; Commentary:
 ;; Make it easy to check local time in various time zones.
-;;; Code:
 
+;;; Code:
 (require 'ivy)
 
 (defvar counsel-world-clock-time-format "%B %d, %A, %H:%M (GMT%z)"
@@ -75,5 +75,4 @@ Argument CANDS candidates."
 		(counsel-world-clock--local-time time-zone))))))
 
 (provide 'counsel-world-clock)
-
 ;;; counsel-world-clock.el ends here
