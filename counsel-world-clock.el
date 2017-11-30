@@ -3,7 +3,7 @@
 ;; Author: Kuang Chen <http://github.com/kchenphy>
 ;; URL: https://github.com/kchenphy/counsel-world-clock
 ;; Version: 0.2
-;; Package-Requires: ((ivy "0.9.0") (dash "2.13.0") (s "1.12.0"))
+;; Package-Requires: ((ivy "0.9.0") (s "1.12.0"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -24,9 +24,8 @@
 ;; Make it easy to check local time in various time zones.
 
 ;;; Code:
-(require 'ivy)
-(require 'dash)
 (require 's)
+(require 'ivy)
 
 (defvar counsel-world-clock-time-format
   "%b %d, %a, %H:%M (%/h)"
