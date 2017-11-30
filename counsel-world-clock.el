@@ -2,8 +2,8 @@
 
 ;; Author: Kuang Chen <http://github.com/kchenphy>
 ;; URL: https://github.com/kchenphy/counsel-world-clock
-;; Version: 0.1
-;; Package-Requires: ((ivy "0.9.0"))
+;; Version: 0.2
+;; Package-Requires: ((ivy "0.9.0") (dash "2.13.0") (s "1.12.0"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -25,12 +25,14 @@
 
 ;;; Code:
 (require 'ivy)
+(require 'dash)
+(require 's)
 
 (defvar counsel-world-clock-time-format
-  "%B %d, %A, %H:%M (GMT%z)"
+  "%b %d, %a, %H:%M (%/h)"
   "Time format for ‘counsel-world-clock’.")
 
-(defconst counsel-world-clock--all-time-zones
+(defconst counsel-world-clock--time-zones
   '(
     "Africa/Abidjan"
     "Africa/Accra"
@@ -459,18 +461,62 @@
   "All supported time zones."
   )
 
+(defun counsel-world-clock--offset (time-zone)
+  "Get the UTC offset in hour for given TIME-ZONE.
+Argument TIME-ZONE: input time zone.  If TIME-ZONE is nil,
+system time zone is returned."
+  (/
+   (car (current-time-zone
+	 nil
+	 time-zone))
+   3600))
+
+(defconst counsel-world-clock--system-offset
+  (counsel-world-clock--offset nil)
+  "UTC offset of system's time zone.")
+
+(defun counsel-world-clock--diff-from-system (time-zone)
+  "Get the difference in hour between TIME-ZONE and system time zone."
+  (-
+   (counsel-world-clock--offset time-zone)
+   counsel-world-clock--system-offset))
+
+(defun counsel-world-clock--format-time-string (format-string time-zone)
+  "Using FORMAT-STRING, format time with current time in a given TIME-ZONE.
+
+Argument FORMAT-STRING: argument passed to 'format-time-string'.
+In addition to the standard format placeholders, \"%/\" is
+added which is replaced by the return value of
+'counsel-world-clock--diff-from-system'.
+Argument TIME-ZONE input time zone."
+  (let* ((diff (format
+		"%+3d"
+		(counsel-world-clock--diff-from-system
+		 time-zone)))
+	 (fmt (s-replace
+	       "%/"
+	       diff
+	       format-string)))
+    (format-time-string
+     fmt
+     (current-time)
+     time-zone)))
+
 (defun counsel-world-clock--local-time (time-zone)
   "Get current local time in a given time zone.
 Argument TIME-ZONE input time zone."
-  (format-time-string
+  (counsel-world-clock--format-time-string
    counsel-world-clock-time-format
-   (current-time)
    time-zone))
 
-(defun counsel-world-clock--format-candidate (time-zone)
-  "Decorate a time zone into an ivy candidate.
+(defun counsel-world-clock--decorate-candidate (time-zone)
+  "Decorate a time zone candidate, by appending local time.
 ARGUMENT TIME-ZONE input time zone."
-  (format "%-40s%s" time-zone (counsel-world-clock--local-time time-zone)))
+  (format
+   "%-40s%s"
+   time-zone
+   (counsel-world-clock--local-time
+    time-zone)))
 
 (defun counsel-world-clock--format-function (cands)
   "Customize ivy interface, by appending local time directly to the time zone.
@@ -478,10 +524,10 @@ Argument CANDS candidates."
   (ivy--format-function-generic
    (lambda (time-zone)
      (ivy--add-face
-      (counsel-world-clock--format-candidate
+      (counsel-world-clock--decorate-candidate
        time-zone)
       'ivy-current-match))
-   'counsel-world-clock--format-candidate
+   'counsel-world-clock--decorate-candidate
    cands
    "\n"))
 
@@ -491,7 +537,7 @@ Argument CANDS candidates."
   (let ((ivy-format-function #'counsel-world-clock--format-function))
     (ivy-read
      "Time zone: "
-     counsel-world-clock--all-time-zones
+     counsel-world-clock--time-zones
      :action (lambda (time-zone)
 	       (message
 		"Local time in %s is %s"
