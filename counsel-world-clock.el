@@ -2,7 +2,7 @@
 
 ;; Author: Kuang Chen <http://github.com/kchenphy>
 ;; URL: https://github.com/kchenphy/counsel-world-clock
-;; Version: 0.2
+;; Version: 0.2.1
 ;; Package-Requires: ((ivy "0.9.0") (s "1.12.0"))
 
 ;; This file is not part of GNU Emacs.
@@ -462,8 +462,7 @@
 
 (defun counsel-world-clock--offset (time-zone)
   "Get the UTC offset in hour for given TIME-ZONE.
-Argument TIME-ZONE: input time zone.  If TIME-ZONE is nil,
-system time zone is returned."
+If TIME-ZONE is nil, system time zone is returned."
   (/
    (car (current-time-zone
 	 nil
@@ -481,13 +480,12 @@ system time zone is returned."
    counsel-world-clock--system-offset))
 
 (defun counsel-world-clock--format-time-string (format-string time-zone)
-  "Using FORMAT-STRING, format time with current time in a given TIME-ZONE.
+  "Use FORMAT-STRING to format current time in a given TIME-ZONE.
 
-Argument FORMAT-STRING: argument passed to 'format-time-string'.
+FORMAT-STRING is similar to the argument passed to `format-time-string'.
 In addition to the standard format placeholders, \"%/\" is
 added which is replaced by the return value of
-'counsel-world-clock--diff-from-system'.
-Argument TIME-ZONE input time zone."
+`counsel-world-clock--diff-from-system'."
   (let* ((diff (format
 		"%+3d"
 		(counsel-world-clock--diff-from-system
@@ -502,24 +500,21 @@ Argument TIME-ZONE input time zone."
      time-zone)))
 
 (defun counsel-world-clock--local-time (time-zone)
-  "Get current local time in a given time zone.
-Argument TIME-ZONE input time zone."
+  "Get current local time in TIME-ZONE."
   (counsel-world-clock--format-time-string
    counsel-world-clock-time-format
    time-zone))
 
 (defun counsel-world-clock--decorate-candidate (time-zone)
-  "Decorate a time zone candidate, by appending local time.
-ARGUMENT TIME-ZONE input time zone."
+  "Decorate a TIME-ZONE candidate, by appending local time."
   (format
    "%-40s%s"
    time-zone
    (counsel-world-clock--local-time
     time-zone)))
 
-(defun counsel-world-clock--format-function (cands)
-  "Customize ivy interface, by appending local time directly to the time zone.
-Argument CANDS candidates."
+(defun counsel-world-clock--format-function (candidates)
+  "Customized Ivy format function, which displays decorated time-zone CANDIDATES."
   (ivy--format-function-generic
    (lambda (time-zone)
      (ivy--add-face
@@ -527,7 +522,7 @@ Argument CANDS candidates."
        time-zone)
       'ivy-current-match))
    'counsel-world-clock--decorate-candidate
-   cands
+   candidates
    "\n"))
 
 ;;;###autoload
