@@ -530,6 +530,7 @@ Argument CANDS candidates."
    cands
    "\n"))
 
+;;;###autoload
 (defun counsel-world-clock ()
   "Display time in different time zone in echo area."
   (interactive)
