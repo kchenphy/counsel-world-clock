@@ -3,3 +3,15 @@
 Displays world clock using Ivy. 
 
 [[./screenshot.png]]
+
+# Installation
+
+#+BEGIN_SRC 
+M-x package-install RET counsel-world-clock
+#+END_SRC
+
+# Usage
+Run =M-x counsel-world-clock=. Enter your time zone and you will see the local time in that time-zone.
+
+# Customization
+TODO
