@@ -27,9 +27,15 @@
 (require 's)
 (require 'ivy)
 
-(defvar counsel-world-clock-time-format
+(defcustom counsel-world-clock-time-format
   "%b %d, %a, %H:%M (%/h)"
-  "Time format for ‘counsel-world-clock’.")
+  "Time format for ‘counsel-world-clock’.
+It is similiar to the format string passed to `format-time-string', but
+in addition introduces \"%/\", which is replaced with the hour difference
+between the target time zone and system time zone."
+  :type '(string)
+  :group 'convenience
+  )
 
 (defconst counsel-world-clock--time-zones
   '(

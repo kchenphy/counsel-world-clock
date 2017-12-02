@@ -7,11 +7,11 @@ Displays world clock using Ivy.
 # Installation
 
 #+BEGIN_SRC 
-M-x package-install RET counsel-world-clock
+M-x package-install RET counsel-world-clock RET
 #+END_SRC
 
 # Usage
 Run =M-x counsel-world-clock=. Enter your time zone and you will see the local time in that time-zone.
 
 # Customization
-TODO
+Run =M-x customize-variable RET counsel-world-clock-time-forma= to customize how local time is displayed in echo area.
