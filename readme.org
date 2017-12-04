@@ -1,5 +1,7 @@
 #+TITLE: Counsel World Clock
 
+[[https://melpa.org/#/counsel-world-clock][file:https://melpa.org/packages/counsel-world-clock-badge.svg]]
+
 Displays world clock using Ivy. 
 
 [[./screenshot.png]]
