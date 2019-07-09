@@ -539,6 +539,7 @@ added which is replaced by the return value of
     (ivy-read
      "Time zone: "
      counsel-world-clock--time-zones
+     :caller 'counsel-world-clock
      :action (lambda (time-zone)
 	       (message
 		"Local time in %s is %s"
